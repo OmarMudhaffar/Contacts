@@ -1,0 +1,105 @@
+<?php
+$botToken = " "; // توكن
+$website = "https://api.telegram.org/bot".$botToken;
+$update = file_get_contents('php://input');
+$update = json_decode($update, TRUE);
+$chatId = $update["message"]["chat"]["id"];
+$for = $update["message"]["from"]["id"];
+$type = $update["message"]["chat"]["type"];
+$cont = $update["message"]["contact"];
+$memb = $update["message"]["message_id"];
+$message2 = $update["message"]["text"];
+$file = "ids.php";
+include "ids.php";
+$channel = -1001110103371; // ايدي القناة لنشر الجهات
+include "idst.php";
+$start_id = "idst.php";
+$sudo_id = 325384922; // المطور
+$g = explode("https", $message2);
+if($message != in_array("https", $g)){
+sendmark($chatId, "dont", $memb);
+}
+
+$users = count($start_ids);
+
+if ($message2 == "المشتركين" && $for == $sudo_id){
+sendmark($chatId, " 🚹 عدد 🔢 المشتركين هوة : " . $users, $memb);
+}
+
+
+if($message2 == "/start" && !in_array($for, $start_ids)){
+file_put_contents($start_id, "\n" . '$start_ids[] = ' . $for . ";", FILE_APPEND);
+}
+
+
+if ($cont && !in_array($for, $id) && $type == "private"){
+file_put_contents($file, "\n" . '$id[] = ' . $for . ";", FILE_APPEND);
+}
+
+if ($cont && in_array($for, $id) && $type == "private"){
+sendmark($chatId, "لا يمكنك❗️مشاركة جهت اتصالك مرتين 📱", $memb);
+}
+
+
+if ($cont && $message != "/start" && !in_array($for, $id) && $type == "private"){
+forwardMessage($channel, $chatId, $memb);
+sendmark($chatId, "تم ☘ نشر جهة اتصالك 📱" . "[ هنا ](https://t.me/count66)", $memb);
+}
+
+
+function forwardMessage ($channel, $chatId, $memb){
+		   $url = $GLOBALS[website].'/forwardMessage?chat_id='.$channel.'&from_chat_id='.$chatId.'&message_id='.$memb;
+			file_get_contents($url);
+		}
+
+function sendmark ($chatId, $message, $memb){
+$url = $GLOBALS[website].'/sendMessage?chat_id='.$chatId.'&parse_mode=Markdown'.'&text='.urlencode($message).'&reply_to_message_id='.$memb.'&disable_web_page_preview=true';
+    file_get_contents($url);
+     }
+     
+
+
+
+
+
+
+
+ob_start();
+define('API_KEY','300049013:AAGNPnUqGBJTt6Bm8ejEOckoqKvKg4uPeKI');
+function bot($method,$datas=[]){
+    $url = "https://api.telegram.org/bot".API_KEY."/".$method;
+$ch = curl_init();
+    curl_setopt($ch,CURLOPT_URL,$url);
+    curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+    curl_setopt($ch,CURLOPT_POSTFIELDS,$datas);
+    $res = curl_exec($ch);
+    if(curl_error($ch)){
+        var_dump(curl_error($ch));
+    }else{
+        return json_decode($res);
+    }
+}
+$update = json_decode(file_get_contents('php://input'));
+$message = $update->message;
+$chat_id = $message->chat->id;
+$text1 = $message->text;
+
+
+
+if($text1 == "/start"){
+  $text = "اهلا ☘ بك شارك جهة اتصالك 📱 وسيتم نشرها 📩";
+  bot('sendmessage',[
+    'chat_id'=>$chat_id,
+    'text'=>$text,
+    'parse_mode'=>'html',
+    'reply_markup'=>json_encode([
+      'inline_keyboard'=>[
+        [
+          ['text'=>'تابعنا 🔹','url'=>'https://telegram.me/set_web']
+        ]
+      ]
+    ])
+  ]);
+}
+ 
+     ?>
